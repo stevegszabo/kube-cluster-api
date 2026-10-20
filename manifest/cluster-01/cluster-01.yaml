@@ -1,0 +1,223 @@
+---
+# Lets CDI clone the shared VM image into this cluster's namespace.
+# CDI checks the clone against the target namespace's default service account.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cluster-01-clone-sourcer
+  namespace: capk-images
+  labels:
+    cluster.x-k8s.io/cluster-name: cluster-01
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cdi.kubevirt.io:clone-sourcer
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: cluster-01
+
+---
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: Cluster
+metadata:
+  name: cluster-01
+  namespace: cluster-01
+  labels:
+    cni: calico
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      # Must match CALICO_IPV4POOL_CIDR in calico/calico-v3.32.2.yaml.
+      - 10.243.0.0/16
+    services:
+      cidrBlocks:
+      - 10.95.0.0/16
+    serviceDomain: cluster.local
+  controlPlaneRef:
+    apiGroup: controlplane.cluster.x-k8s.io
+    kind: KubeadmControlPlane
+    name: cluster-01-control
+  infrastructureRef:
+    apiGroup: infrastructure.cluster.x-k8s.io
+    kind: KubevirtCluster
+    name: cluster-01
+
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: KubeadmControlPlane
+metadata:
+  name: cluster-01-control
+  namespace: cluster-01
+spec:
+  kubeadmConfigSpec:
+    files:
+    - path: /etc/kubeadm/patches/kubeletconfiguration+merge.yaml
+      owner: root:root
+      permissions: "0644"
+      content: ""  # set from kubelet-config.yaml by kustomization.yaml
+    initConfiguration:
+      nodeRegistration:
+        criSocket: unix:///var/run/containerd/containerd.sock
+      patches:
+        directory: /etc/kubeadm/patches
+    joinConfiguration:
+      nodeRegistration:
+        criSocket: unix:///var/run/containerd/containerd.sock
+      patches:
+        directory: /etc/kubeadm/patches
+  machineTemplate:
+    spec:
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: KubevirtMachineTemplate
+        name: cluster-01-control-v1-34
+  replicas: 1
+  version: v1.34.1
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtCluster
+metadata:
+  name: cluster-01
+  namespace: cluster-01
+spec:
+  controlPlaneServiceTemplate:
+    spec:
+      type: ClusterIP
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtMachineTemplate
+metadata:
+  name: cluster-01-control-v1-34
+  namespace: cluster-01
+spec:
+  template:
+    spec:
+      virtualMachineBootstrapCheck:
+        checkStrategy: ssh
+      virtualMachineTemplate:
+        spec:
+          runStrategy: Always
+          dataVolumeTemplates:
+          - metadata:
+              name: containervolume
+            spec:
+              storage:
+                storageClassName: local-path
+                accessModes: ["ReadWriteOnce"]
+                resources:
+                  requests:
+                    storage: 25Gi
+              source:
+                pvc:
+                  namespace: capk-images
+                  name: ubuntu-2404-v1-34-1
+          template:
+            spec:
+              domain:
+                cpu:
+                  cores: 2
+                devices:
+                  disks:
+                  - disk:
+                      bus: virtio
+                    name: containervolume
+                  networkInterfaceMultiqueue: true
+                memory:
+                  guest: 4Gi
+              evictionStrategy: External
+              volumes:
+              - name: containervolume
+                dataVolume:
+                  name: containervolume
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtMachineTemplate
+metadata:
+  name: cluster-01-worker-v1-34
+  namespace: cluster-01
+# spec.template is copied from cluster-01-control-v1-34 by kustomization.yaml.
+spec: {}
+
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: KubeadmConfigTemplate
+metadata:
+  name: cluster-01-worker-v1-34
+  namespace: cluster-01
+spec:
+  template:
+    spec:
+      files:
+      - path: /etc/kubeadm/patches/kubeletconfiguration+merge.yaml
+        owner: root:root
+        permissions: "0644"
+        content: ""  # set from kubelet-config.yaml by kustomization.yaml
+      joinConfiguration:
+        nodeRegistration:
+          criSocket: unix:///var/run/containerd/containerd.sock
+        patches:
+          directory: /etc/kubeadm/patches
+
+---
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: MachineDeployment
+metadata:
+  name: cluster-01-worker
+  namespace: cluster-01
+spec:
+  clusterName: cluster-01
+  replicas: 1
+  # Replace workers delete-first: monster has no memory for a surge VM.
+  rollout:
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: cluster-01
+      cluster.x-k8s.io/deployment-name: cluster-01-worker
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: cluster-01
+        cluster.x-k8s.io/deployment-name: cluster-01-worker
+    spec:
+      bootstrap:
+        configRef:
+          apiGroup: bootstrap.cluster.x-k8s.io
+          kind: KubeadmConfigTemplate
+          name: cluster-01-worker-v1-34
+      clusterName: cluster-01
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: KubevirtMachineTemplate
+        name: cluster-01-worker-v1-34
+      version: v1.34.1
+
+---
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: MachineHealthCheck
+metadata:
+  name: cluster-01-worker
+  namespace: cluster-01
+spec:
+  clusterName: cluster-01
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/deployment-name: cluster-01-worker
+  checks:
+    nodeStartupTimeoutSeconds: 600
+    unhealthyNodeConditions:
+    - type: Ready
+      status: Unknown
+      timeoutSeconds: 600
+    - type: Ready
+      status: "False"
+      timeoutSeconds: 600

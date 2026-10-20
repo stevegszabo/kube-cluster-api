@@ -1,0 +1,24 @@
+---
+# Shared VM disk images, cloned into each cluster's namespace by CDI.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: capk-images
+
+---
+# Clone authorization for CAPK (capk-manager), which creates the VMs. CDI
+# also checks the clone against the target namespace's default service
+# account; each cluster manifest grants that with its own RoleBinding here.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: capk-manager-clone-sourcer
+  namespace: capk-images
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cdi.kubevirt.io:clone-sourcer
+subjects:
+- kind: ServiceAccount
+  name: capk-manager
+  namespace: capk-system

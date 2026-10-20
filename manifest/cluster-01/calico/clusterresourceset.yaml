@@ -1,0 +1,14 @@
+---
+apiVersion: addons.cluster.x-k8s.io/v1beta2
+kind: ClusterResourceSet
+metadata:
+  name: calico
+  namespace: cluster-01
+spec:
+  strategy: Reconcile
+  clusterSelector:
+    matchLabels:
+      cni: calico
+  resources:
+  - kind: ConfigMap
+    name: calico

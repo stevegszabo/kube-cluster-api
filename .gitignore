@@ -1,0 +1,2 @@
+# Workload cluster credentials written by `make kubeconfig`.
+*.kubeconfig

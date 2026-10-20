@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Apply with: kubectl apply -k manifest/cluster-01
+resources:
+- cluster-01.yaml
+
+# Kubelet patch source; local-config keeps it out of the rendered output.
+configMapGenerator:
+- name: kubelet-config
+  namespace: cluster-01
+  files:
+  - kubelet-config.yaml
+  options:
+    disableNameSuffixHash: true
+    annotations:
+      config.kubernetes.io/local-config: "true"
+
+replacements:
+# One kubelet patch for control-plane and worker nodes.
+- source:
+    kind: ConfigMap
+    name: kubelet-config
+    fieldPath: data.[kubelet-config.yaml]
+  targets:
+  - select:
+      kind: KubeadmControlPlane
+      name: cluster-01-control
+    fieldPaths:
+    - spec.kubeadmConfigSpec.files.0.content
+  - select:
+      kind: KubeadmConfigTemplate
+      name: cluster-01-worker-v1-34
+    fieldPaths:
+    - spec.template.spec.files.0.content
+# Workers use the same VM spec as the control plane.
+- source:
+    kind: KubevirtMachineTemplate
+    name: cluster-01-control-v1-34
+    fieldPath: spec.template
+  targets:
+  - select:
+      kind: KubevirtMachineTemplate
+      name: cluster-01-worker-v1-34
+    fieldPaths:
+    - spec.template
+    options:
+      create: true
