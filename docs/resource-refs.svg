@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="535" viewBox="0 0 1000 535" role="img" aria-label="Declared objects: the Cluster points at the KubeadmControlPlane and KubevirtCluster; the control plane and MachineDeployment point at their templates; both machine templates clone the DataVolume in capk-images; the ClusterResourceSet and MachineHealthCheck select by label.">
+  <title>Declared objects: the Cluster points at the KubeadmControlPlane and KubevirtCluster; the control plane and MachineDeployment point at their templates; both machine templates clone the DataVolume in capk-images; the ClusterResourceSet and MachineHealthCheck select by label.</title>
+  <style>
+svg { --plate:#ffffff; --fg:#18212c; --muted:#5a6676; --line:#a9b3c0; --hair:#dde2e8; --accent:#0d7680; --file:#eef2f1; }
+@media (prefers-color-scheme: dark) {
+  svg { --plate:#171d25; --fg:#e2e7ee; --muted:#97a2b1; --line:#556170; --hair:#2a323d; --accent:#4cc1c9; --file:#1c2527; }
+}
+.bg { fill: var(--plate); }
+.bx { fill: var(--plate); stroke: var(--line); stroke-width: 1.2; }
+.bx.rt { stroke-dasharray: 5 3; }
+.bx.ext { stroke-dasharray: 1.5 3; }
+.bx.file { fill: var(--file); }
+.fr { fill: none; stroke: var(--hair); stroke-width: 1.2; }
+.k { font: 500 10px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; letter-spacing: 0.06em; fill: var(--muted); }
+.n { font: 500 12px "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; fill: var(--fg); }
+.n.plain { font-family: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12.5px; }
+.el { font: 400 11px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--muted); }
+.el.acc { fill: var(--accent); }
+.fl { font: 600 10px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; letter-spacing: 0.08em; fill: var(--muted); }
+.note { font: 400 11px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--muted); }
+.e { fill: none; stroke: var(--line); stroke-width: 1.3; }
+.e.sel { stroke: var(--accent); stroke-dasharray: 6 4; }
+.e.mk { stroke-dasharray: 5 4; }
+.e.bld { stroke-dasharray: 2 4; stroke-linecap: round; }
+.ah { fill: var(--line); }
+.ah.acc { fill: var(--accent); }
+  </style>
+  <rect class="bg" width="1000" height="535" rx="8"/>
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+    <marker id="a1s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah acc" d="M0 0 L10 5 L0 10 z"/></marker>
+  </defs>
+
+  <rect class="fr" x="8" y="10" width="984" height="370" rx="10"/>
+  <text class="fl" x="22" y="29">NAMESPACE CLUSTER-01</text>
+  <rect class="fr" x="8" y="402" width="984" height="124" rx="10"/>
+  <text class="fl" x="22" y="421">NAMESPACE CAPK-IMAGES</text>
+
+  <!-- row A -->
+  <rect class="bx" x="20" y="40" width="200" height="54" rx="6"/>
+  <text class="k" x="32" y="60">CLUSTERRESOURCESET</text><text class="n" x="32" y="80">calico</text>
+  <rect class="bx" x="400" y="40" width="200" height="54" rx="6"/>
+  <text class="k" x="412" y="60">CLUSTER · CNI=CALICO</text><text class="n" x="412" y="80">cluster-01</text>
+  <rect class="bx" x="780" y="40" width="200" height="54" rx="6"/>
+  <text class="k" x="792" y="60">KUBEVIRTCLUSTER</text><text class="n" x="792" y="80">cluster-01</text>
+
+  <!-- row B -->
+  <rect class="bx" x="20" y="170" width="200" height="54" rx="6"/>
+  <text class="k" x="32" y="190">CONFIGMAP</text><text class="n" x="32" y="210">calico</text>
+  <rect class="bx" x="250" y="170" width="200" height="54" rx="6"/>
+  <text class="k" x="262" y="190">KUBEADMCONTROLPLANE</text><text class="n" x="262" y="210">cluster-01-control</text>
+  <rect class="bx" x="530" y="170" width="200" height="54" rx="6"/>
+  <text class="k" x="542" y="190">MACHINEDEPLOYMENT</text><text class="n" x="542" y="210">cluster-01-worker</text>
+  <rect class="bx" x="790" y="170" width="200" height="54" rx="6"/>
+  <text class="k" x="802" y="190">MACHINEHEALTHCHECK</text><text class="n" x="802" y="210">cluster-01-worker</text>
+
+  <!-- row C -->
+  <rect class="bx" x="250" y="300" width="200" height="54" rx="6"/>
+  <text class="k" x="262" y="320">KUBEVIRTMACHINETEMPLATE</text><text class="n" x="262" y="340">cluster-01-control-v1-34</text>
+  <rect class="bx" x="500" y="300" width="200" height="54" rx="6"/>
+  <text class="k" x="512" y="320">KUBEADMCONFIGTEMPLATE</text><text class="n" x="512" y="340">cluster-01-worker-v1-34</text>
+  <rect class="bx" x="760" y="300" width="200" height="54" rx="6"/>
+  <text class="k" x="772" y="320">KUBEVIRTMACHINETEMPLATE</text><text class="n" x="772" y="340">cluster-01-worker-v1-34</text>
+
+  <!-- row D -->
+  <rect class="bx" x="20" y="440" width="220" height="54" rx="6"/>
+  <text class="k" x="32" y="460">ROLEBINDING</text><text class="n" x="32" y="480">capk-manager-clone-sourcer</text>
+  <rect class="bx" x="500" y="440" width="200" height="54" rx="6"/>
+  <text class="k" x="512" y="460">DATAVOLUME</text><text class="n" x="512" y="480">ubuntu-2404-v1-34-1</text>
+  <rect class="bx" x="770" y="440" width="220" height="54" rx="6"/>
+  <text class="k" x="782" y="460">ROLEBINDING</text><text class="n" x="782" y="480">cluster-01-clone-sourcer</text>
+  <text class="note" x="880" y="512" text-anchor="middle">defined in cluster-01.yaml</text>
+
+  <!-- edges -->
+  <line class="e sel" x1="220" y1="67" x2="397" y2="67" marker-end="url(#a1s)"/>
+  <text class="el acc" x="309" y="59" text-anchor="middle">selects cni=calico</text>
+  <line class="e" x1="600" y1="67" x2="777" y2="67" marker-end="url(#a1)"/>
+  <text class="el" x="689" y="59" text-anchor="middle">infrastructureRef</text>
+  <line class="e" x1="450" y1="94" x2="372" y2="167" marker-end="url(#a1)"/>
+  <text class="el" x="400" y="132" text-anchor="end">controlPlaneRef</text>
+  <line class="e" x1="600" y1="170" x2="556" y2="97" marker-end="url(#a1)"/>
+  <text class="el" x="590" y="132">clusterName</text>
+  <line class="e sel" x1="790" y1="197" x2="733" y2="197" marker-end="url(#a1s)"/>
+  <text class="el acc" x="761" y="189" text-anchor="middle">watches</text>
+  <line class="e" x1="120" y1="94" x2="120" y2="167" marker-end="url(#a1)"/>
+  <text class="el" x="128" y="135">resources</text>
+  <line class="e" x1="350" y1="224" x2="350" y2="297" marker-end="url(#a1)"/>
+  <text class="el" x="358" y="266">machineTemplate</text>
+  <line class="e" x1="600" y1="224" x2="600" y2="297" marker-end="url(#a1)"/>
+  <text class="el" x="608" y="266">bootstrap.configRef</text>
+  <line class="e" x1="700" y1="224" x2="828" y2="297" marker-end="url(#a1)"/>
+  <text class="el" x="782" y="252">infrastructureRef</text>
+  <line class="e" x1="350" y1="354" x2="558" y2="437" marker-end="url(#a1)"/>
+  <line class="e" x1="860" y1="354" x2="642" y2="437" marker-end="url(#a1)"/>
+  <text class="el" x="600" y="427" text-anchor="middle">source.pvc</text>
+  <line class="e" x1="240" y1="467" x2="497" y2="467" marker-end="url(#a1)"/>
+  <text class="el" x="369" y="459" text-anchor="middle">may clone from</text>
+  <line class="e" x1="770" y1="467" x2="703" y2="467" marker-end="url(#a1)"/>
+  <text class="el" x="736" y="459" text-anchor="middle">may clone</text>
+</svg>

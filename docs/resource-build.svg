@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="215" viewBox="0 0 1000 215" role="img" aria-label="Build time: kubelet-config.yaml is copied into the files of the control plane and the worker KubeadmConfigTemplate; the control-plane machine template's spec is copied into the worker template; calico-v3.32.2.yaml is turned into the calico ConfigMap.">
+  <title>Build time: kubelet-config.yaml is copied into the files of the control plane and the worker KubeadmConfigTemplate; the control-plane machine template's spec is copied into the worker template; calico-v3.32.2.yaml is turned into the calico ConfigMap.</title>
+  <style>
+svg { --plate:#ffffff; --fg:#18212c; --muted:#5a6676; --line:#a9b3c0; --hair:#dde2e8; --accent:#0d7680; --file:#eef2f1; }
+@media (prefers-color-scheme: dark) {
+  svg { --plate:#171d25; --fg:#e2e7ee; --muted:#97a2b1; --line:#556170; --hair:#2a323d; --accent:#4cc1c9; --file:#1c2527; }
+}
+.bg { fill: var(--plate); }
+.bx { fill: var(--plate); stroke: var(--line); stroke-width: 1.2; }
+.bx.rt { stroke-dasharray: 5 3; }
+.bx.ext { stroke-dasharray: 1.5 3; }
+.bx.file { fill: var(--file); }
+.fr { fill: none; stroke: var(--hair); stroke-width: 1.2; }
+.k { font: 500 10px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; letter-spacing: 0.06em; fill: var(--muted); }
+.n { font: 500 12px "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; fill: var(--fg); }
+.n.plain { font-family: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12.5px; }
+.el { font: 400 11px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--muted); }
+.el.acc { fill: var(--accent); }
+.fl { font: 600 10px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; letter-spacing: 0.08em; fill: var(--muted); }
+.note { font: 400 11px "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--muted); }
+.e { fill: none; stroke: var(--line); stroke-width: 1.3; }
+.e.sel { stroke: var(--accent); stroke-dasharray: 6 4; }
+.e.mk { stroke-dasharray: 5 4; }
+.e.bld { stroke-dasharray: 2 4; stroke-linecap: round; }
+.ah { fill: var(--line); }
+.ah.acc { fill: var(--accent); }
+  </style>
+  <rect class="bg" width="1000" height="215" rx="8"/>
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+  </defs>
+
+  <rect class="bx file" x="20" y="85" width="200" height="54" rx="6"/>
+  <text class="k" x="32" y="105">FILE</text><text class="n" x="32" y="125">kubelet-config.yaml</text>
+  <rect class="bx" x="300" y="30" width="200" height="54" rx="6"/>
+  <text class="k" x="312" y="50">KUBEADMCONTROLPLANE</text><text class="n" x="312" y="70">cluster-01-control</text>
+  <rect class="bx" x="300" y="140" width="200" height="54" rx="6"/>
+  <text class="k" x="312" y="160">KUBEADMCONFIGTEMPLATE</text><text class="n" x="312" y="180">cluster-01-worker-v1-34</text>
+  <line class="e bld" x1="220" y1="100" x2="297" y2="62" marker-end="url(#a3)"/>
+  <line class="e bld" x1="220" y1="124" x2="297" y2="162" marker-end="url(#a3)"/>
+  <text class="el" x="232" y="116">files[0].content</text>
+
+  <rect class="bx" x="560" y="30" width="200" height="54" rx="6"/>
+  <text class="k" x="572" y="50">KUBEVIRTMACHINETEMPLATE</text><text class="n" x="572" y="70">cluster-01-control-v1-34</text>
+  <rect class="bx" x="560" y="140" width="200" height="54" rx="6"/>
+  <text class="k" x="572" y="160">KUBEVIRTMACHINETEMPLATE</text><text class="n" x="572" y="180">cluster-01-worker-v1-34</text>
+  <line class="e bld" x1="660" y1="84" x2="660" y2="137" marker-end="url(#a3)"/>
+  <text class="el" x="668" y="116">spec.template</text>
+
+  <rect class="bx file" x="790" y="30" width="200" height="54" rx="6"/>
+  <text class="k" x="802" y="50">FILE</text><text class="n" x="802" y="70">calico-v3.32.2.yaml</text>
+  <rect class="bx" x="790" y="140" width="200" height="54" rx="6"/>
+  <text class="k" x="802" y="160">CONFIGMAP</text><text class="n" x="802" y="180">calico</text>
+  <line class="e bld" x1="890" y1="84" x2="890" y2="137" marker-end="url(#a3)"/>
+  <text class="el" x="898" y="116">generates</text>
+</svg>
